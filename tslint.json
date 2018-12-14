@@ -1,6 +1,9 @@
 {
-    "extends": ["tslint:latest", "tslint-react"],
+    "extends": ["tslint:latest", "tslint-react", "tslint-config-airbnb"],
     "rules": {
       // override tslint-react rules here
+      "no-submodule-imports": [true, "next"],
+      "variable-name": [true, "allow-pascal-case"],
+      "member-access": [true, "no-public"]
     }
   }
