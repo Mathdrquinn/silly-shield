@@ -2,10 +2,10 @@ import { Container, default as NextApp } from 'next/app';
 import { Page } from '../components/Page';
 
 export default class App extends NextApp {
-  render() {
-    const { Component } = this.props;
+    render() {
+        const { Component } = this.props;
 
-    return (
+        return (
       <Container>
         <Page>
           <h1>Silly Shield</h1>
@@ -13,6 +13,6 @@ export default class App extends NextApp {
           <Component />
         </Page>
       </Container>
-    );
-  }
+        );
+    }
 }

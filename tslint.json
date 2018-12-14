@@ -2,8 +2,10 @@
     "extends": ["tslint:latest", "tslint-react", "tslint-config-airbnb"],
     "rules": {
       // override tslint-react rules here
+      "indent": [true, "spaces", 4],
+      "ter-indent": [true, 4],
+      "member-access": [true, "no-public"],
       "no-submodule-imports": [true, "next"],
-      "variable-name": [true, "allow-pascal-case"],
-      "member-access": [true, "no-public"]
+      "variable-name": [true, "allow-pascal-case"]
     }
   }

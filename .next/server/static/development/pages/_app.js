@@ -586,120 +586,130 @@ function (_React$Component) {
       username: ''
     });
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onFirstChange", function (e) {
+      if (e.target) {
+        _this.setState({
+          first: e.target.value
+        });
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onLastChange", function (e) {
+      if (e.target) {
+        _this.setState({
+          last: e.target.value
+        });
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onUsernameChange", function (e) {
+      if (e.target) {
+        _this.setState({
+          username: e.target.value
+        });
+      }
+    });
+
     return _this;
   }
 
   _createClass(SignUp, [{
     key: "render",
     value: function render() {
-      var _this2 = this;
-
       return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("form", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 15
+          lineNumber: 33
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("legend", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 16
+          lineNumber: 34
         },
         __self: this
       }, "Sign Up for Silly Shield Tournaments"), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("fieldset", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 17
+          lineNumber: 35
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("legend", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 18
+          lineNumber: 36
         },
         __self: this
       }, "Your info"), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("label", {
         htmlFor: "first",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 19
+          lineNumber: 37
         },
         __self: this
       }, "First Name:", react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", {
         id: "first",
-        onChange: function onChange(e) {
-          return _this2.setState({
-            first: e.target.value
-          });
-        },
+        onChange: this.onFirstChange,
         required: true,
         type: "text",
         value: this.state.first,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 21
+          lineNumber: 39
         },
         __self: this
       })), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 29
+          lineNumber: 47
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("label", {
         htmlFor: "last",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 30
+          lineNumber: 48
         },
         __self: this
       }, "Last Name:", react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", {
         id: "first",
-        onChange: function onChange(e) {
-          return _this2.setState({
-            last: e.target.value
-          });
-        },
+        onChange: this.onLastChange,
         required: true,
         type: "text",
         value: this.state.last,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 32
+          lineNumber: 50
         },
         __self: this
       })), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 40
+          lineNumber: 58
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("label", {
         htmlFor: "username",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 41
+          lineNumber: 59
         },
         __self: this
       }, "Username:", react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("small", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 43
+          lineNumber: 61
         },
         __self: this
       }, "(for Silly Shield)"), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", {
         id: "username",
-        onChange: function onChange(e) {
-          return _this2.setState({
-            username: e.target.value
-          });
-        },
+        onChange: this.onUsernameChange,
         required: true,
         type: "text",
         value: this.state.username,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 44
+          lineNumber: 62
         },
         __self: this
       }))));

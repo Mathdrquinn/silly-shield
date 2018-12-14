@@ -1,14 +1,32 @@
 import * as React from 'react';
 
-interface State {
+interface IState {
     first: string;
     last: string;
     username: string;
 }
 
 export const URL = '/sign-up';
-export class SignUp extends React.Component<{}, State> {
+export class SignUp extends React.Component<{}, IState> {
     state = { first: '', last: '', username: '' };
+
+    onFirstChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+        if (e.target) {
+            this.setState({ first: e.target.value });
+        }
+    }
+
+    onLastChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+        if (e.target) {
+            this.setState({ last: e.target.value });
+        }
+    }
+
+    onUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+        if (e.target) {
+            this.setState({ username: e.target.value });
+        }
+    }
 
     render() {
         return (
@@ -20,7 +38,7 @@ export class SignUp extends React.Component<{}, State> {
                         First Name:
                         <input
                             id="first"
-                            onChange={(e) => this.setState({ first: e.target.value })}
+                            onChange={this.onFirstChange}
                             required={true}
                             type="text"
                             value={this.state.first}
@@ -31,11 +49,11 @@ export class SignUp extends React.Component<{}, State> {
                         Last Name:
                     <input
                             id="first"
-                            onChange={(e) => this.setState({ last: e.target.value })}
+                            onChange={this.onLastChange}
                             required={true}
                             type="text"
                             value={this.state.last}
-                        />
+                    />
                     </label>
                     <br/>
                     <label htmlFor="username">
@@ -43,7 +61,7 @@ export class SignUp extends React.Component<{}, State> {
                         <small>(for Silly Shield)</small>
                         <input
                             id="username"
-                            onChange={(e) => this.setState({ username: e.target.value })}
+                            onChange={this.onUsernameChange}
                             required={true}
                             type="text"
                             value={this.state.username}

@@ -3,8 +3,8 @@ import { Header } from './Header';
 import { Meta } from './Meta';
 
 export class Page extends React.Component<{}, {}> {
-  render() {
-    return (
+    render() {
+      return (
       <div>
         <Meta />
         <Header />
