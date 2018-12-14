@@ -1,0 +1,32 @@
+{
+  "name": "silly-shield",
+  "version": "1.0.0",
+  "description": "a fun app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mathdrquinn/silly-shield.git"
+  },
+  "author": "Brendan Quinn <quinn.197@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mathdrquinn/silly-shield/issues"
+  },
+  "homepage": "https://github.com/Mathdrquinn/silly-shield#readme",
+  "devDependencies": {
+    "babel-core": "6.26.3",
+    "babel-jest": "23.6.0",
+    "babel-plugin-module-resolver": "3.1.1",
+    "enzyme": "3.8.0",
+    "enzyme-adapter-react-16": "1.7.1",
+    "typescript": "3.2.2"
+  },
+  "dependencies": {
+    "next": "7.0.2",
+    "nprogress": "0.2.0",
+    "react": "^16.6.3"
+  }
+}

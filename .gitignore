@@ -1,0 +1,8 @@
+# IDE
+.vscode/
+
+# Front End Dev
+node_modules/
+
+# OS
+.DS_Store/
