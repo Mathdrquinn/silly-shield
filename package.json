@@ -4,6 +4,7 @@
   "description": "a fun app",
   "main": "index.js",
   "scripts": {
+    "start:dev": "next",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,11 +21,14 @@
     "@types/next": "7.0.5",
     "@types/nprogress": "0.0.29",
     "@types/react": "16.7.17",
+    "@types/react-dom": "16.0.11",
     "babel-core": "6.26.3",
     "babel-jest": "23.6.0",
     "babel-plugin-module-resolver": "3.1.1",
     "enzyme": "3.8.0",
     "enzyme-adapter-react-16": "1.7.1",
+    "tslint": "5.11.0",
+    "tslint-react": "3.6.0",
     "typescript": "3.2.2"
   },
   "dependencies": {
