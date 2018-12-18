@@ -115,6 +115,15 @@ export class SignUp extends React.Component<{}, IState> {
                         />
                     </label>
                     <br/>
+                    <label htmlFor="picture">
+                        Screen shot of trainer page;
+                        <input
+                            id="picture"
+                            name="picture"
+                            type="file"
+                            accept="image/*"
+                        />
+                    </label>
                     <button name="submit">Sign Up</button>
                 </fieldset>
             </form>
