@@ -1,16 +1,28 @@
 import * as React from 'react';
+import { convertBlobToBase64URL } from '../util/blob';
+import { Logger } from '../util/Logger';
 
 interface IState {
     first: string;
     last: string;
     username: string;
     poGoUsername: string;
-    experience: number;
+    trainerLevel: number;
+    picture: File | null;
+    preview: string | null;
 }
 
 export const URL = '/sign-up';
 export class SignUp extends React.Component<{}, IState> {
-    state = { first: '', last: '', username: '', poGoUsername: '', experience: 0 };
+    state = {
+        first: '',
+        last: '',
+        picture: null,
+        poGoUsername: '',
+        preview: null,
+        trainerLevel: 0,
+        username: '',
+    };
 
     onFirstChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         if (e.target) {
@@ -36,17 +48,43 @@ export class SignUp extends React.Component<{}, IState> {
         }
     }
 
-    onExperienceChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    onTrainerLevelChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         if (e.target) {
-            this.setState({ experience: Number(e.target.value) });
+            this.setState({ trainerLevel: Number(e.target.value) });
+        }
+    }
+
+    onPictureChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+        if (e.target && e.target.files && e.target.files.length) {
+            this.setState({ picture: e.target.files[0] });
         }
     }
 
     onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
+        alert('Submitted :)');
+    }
+
+    componentDidUpdate = (prevProps, prevState) => {
+        const currentPicture = this.state.picture;
+        const previousPicture = prevState.picture;
+        if (currentPicture && currentPicture !== previousPicture) {
+            convertBlobToBase64URL(currentPicture)
+                .then(url => this.setState({ preview: url }))
+                .catch(e => Logger.error(e));
+        }
     }
 
     render() {
+        const preview = this.state.preview
+            ? (
+                <img
+                    alt="Your trainer image: looking so fly"
+                    src={this.state.preview}
+                    style={{ maxWidth: '100%' }}
+                />
+            )
+            : null;
         return (
             <form onSubmit={this.onSubmit}>
                 <legend>Sign Up for Silly Shield Tournaments</legend>
@@ -69,6 +107,7 @@ export class SignUp extends React.Component<{}, IState> {
                     <input
                             id="last"
                             name="last"
+                            onChange={this.onLastChange}
                             required={true}
                             type="text"
                             value={this.state.last}
@@ -101,29 +140,34 @@ export class SignUp extends React.Component<{}, IState> {
                         />
                     </label>
                     <br/>
-                    <label htmlFor="experience">
-                        Experience:
+                    <label htmlFor="trainerLevel">
+                        Trainer Level:
                         <input
-                            id="experience"
-                            name="experience"
-                            onChange={this.onExperienceChange}
+                            id="trainerLevel"
+                            name="trainerLevel"
+                            onChange={this.onTrainerLevelChange}
                             required={true}
                             type="number"
                             min={0}
+                            max={40}
                             step={1}
-                            value={this.state.experience}
+                            value={this.state.trainerLevel}
                         />
                     </label>
                     <br/>
                     <label htmlFor="picture">
-                        Screen shot of trainer page;
+                        Screen shot of trainer page:
                         <input
                             id="picture"
                             name="picture"
+                            onChange={this.onPictureChange}
+                            required={true}
                             type="file"
                             accept="image/*"
                         />
                     </label>
+                    {preview}
+                    <br/>
                     <button name="submit">Sign Up</button>
                 </fieldset>
             </form>
