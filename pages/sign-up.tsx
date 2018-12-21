@@ -14,6 +14,14 @@ interface IState {
 
 export const URL = '/sign-up';
 export class SignUp extends React.Component<{}, IState> {
+    static Preview: React.SFC<{ preview: string }> = ({ preview }) => (
+        <img
+            alt="Your trainer image: looking so fly"
+            src={preview}
+            style={{ maxWidth: '100%' }}
+        />
+    )
+
     state = {
         first: '',
         last: '',
@@ -76,15 +84,8 @@ export class SignUp extends React.Component<{}, IState> {
     }
 
     render() {
-        const preview = this.state.preview
-            ? (
-                <img
-                    alt="Your trainer image: looking so fly"
-                    src={this.state.preview}
-                    style={{ maxWidth: '100%' }}
-                />
-            )
-            : null;
+        const { preview } = this.state;
+
         return (
             <form onSubmit={this.onSubmit}>
                 <legend>Sign Up for Silly Shield Tournaments</legend>
@@ -166,7 +167,7 @@ export class SignUp extends React.Component<{}, IState> {
                             accept="image/*"
                         />
                     </label>
-                    {preview}
+                    {preview ? (<SignUp.Preview preview={preview} />) : null}
                     <br/>
                     <button name="submit">Sign Up</button>
                 </fieldset>
