@@ -1,0 +1,12 @@
+{
+  "name": "silly-shield-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy:dev": "npx prisma deploy --env-file variables.env"
+  },
+  "author": "",
+  "license": "ISC"
+}
