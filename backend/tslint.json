@@ -1,0 +1,12 @@
+{
+    "extends": ["tslint:latest", "tslint-config-airbnb"],
+    "rules": {
+      // override tslint-react rules here
+      "indent": [true, "spaces", 4],
+      "ter-indent": [true, 4],
+      "member-access": [true, "no-public"],
+      "no-submodule-imports": [true, "next"],
+      "variable-name": [true, "allow-pascal-case"],
+      "no-console": { "severity": "warn" }
+    }
+  }
