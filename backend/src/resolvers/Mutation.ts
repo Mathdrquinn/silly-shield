@@ -1,8 +1,7 @@
 import { MutationResolvers } from '../generated/graphqlgen';
-import { Mutation as MutationBase } from '../generated/resolvers/Mutation';
 
 export const Mutation: MutationResolvers.Type = {
-    ...MutationBase,
+    ...MutationResolvers.defaultResolvers,
     // args -- parent, args, context, info
     createUser(parent, args) {
         console.log(args);
