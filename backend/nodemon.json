@@ -1,0 +1,6 @@
+{
+    "ignore": ["src/generated/**/*.*"],
+    "events": {
+      "restart": "npm run generate"
+    }
+  }

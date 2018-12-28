@@ -10,5 +10,8 @@
       "no-console": { "severity": "warn" },
       "interface-name": { "severity": "off" },
       "ban-types": { "severity": "warn" }
+    },
+    "linterOptions": {
+      "exclude": ["src/generated/**/*.ts"]
     }
   }

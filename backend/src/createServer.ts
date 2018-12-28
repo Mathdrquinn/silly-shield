@@ -1,8 +1,7 @@
 import { GraphQLServer } from 'graphql-yoga';
 // import { db } from './db';
 import { prisma } from './generated/prisma-client';
-import { mutation as Mutation } from './mutation';
-import { query as Query } from './query';
+import { resolvers } from './generated/resolvers/index';
 
 export function createServer() {
     return new GraphQLServer({
@@ -10,10 +9,7 @@ export function createServer() {
         resolverValidationOptions: {
             requireResolversForResolveType: false,
         },
-        resolvers: {
-            Mutation,
-            Query,
-        },
+        resolvers: resolvers as any,
         typeDefs: 'src/schema.graphql',
     });
 }
