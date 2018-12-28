@@ -1,7 +1,7 @@
 import { Prisma, User } from './generated/prisma-client';
 
 export interface Context {
-    prisma: Prisma;
+    db: Prisma;
     request: any;
 }
 

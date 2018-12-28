@@ -6,9 +6,11 @@ import { Resolvers } from "../graphqlgen";
 import { Query } from "./Query";
 import { User } from "./User";
 import { Mutation } from "./Mutation";
+import { Tournament } from "./Tournament";
 
 export const resolvers: Resolvers = {
   Query,
   User,
-  Mutation
+  Mutation,
+  Tournament
 };

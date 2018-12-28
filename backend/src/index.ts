@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv';
 import { Options } from 'graphql-yoga';
 import { createServer } from './createServer';
-// import { db } from './db';
 
 dotenv.config({ path: 'variables.env' });
 const server = createServer();
