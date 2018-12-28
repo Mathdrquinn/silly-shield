@@ -1,8 +1,8 @@
 import { GraphQLServer } from 'graphql-yoga';
 // import { db } from './db';
 import { prisma } from './generated/prisma-client';
-// import { mutation as Mutation } from './mutation';
-// import { query as Query } from './query';
+import { mutation as Mutation } from './mutation';
+import { query as Query } from './query';
 
 export function createServer() {
     return new GraphQLServer({
@@ -11,8 +11,8 @@ export function createServer() {
             requireResolversForResolveType: false,
         },
         resolvers: {
-            // Mutation,
-            // Query,
+            Mutation,
+            Query,
         },
         typeDefs: 'src/schema.graphql',
     });
