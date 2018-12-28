@@ -1,10 +1,9 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-      "target": "esnext",
-      "module": "esnext",
-      "allowJs": true,
-      "moduleResolution": "node",
+      "allowJs": false,
+      "module": "commonjs",
+      "target": "es6",
       "allowSyntheticDefaultImports": true,
       "noUnusedLocals": true,
       "noUnusedParameters": true,
