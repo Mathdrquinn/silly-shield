@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy:dev": "npx prisma deploy --env-file variables.env",
-    "start": "npx nodemon -e js,ts,graphql -x ts-node src/index.ts",
+    "start": "npx nodemon -e js,ts,graphql -x ts-node -r dotenv/config src/index.ts dotenv_config_path=variables.env",
     "debug": "npx nodemon -e js,ts,graphql -x ts-node --inspect npm src/index.ts",
     "generate": "graphqlgen"
   },

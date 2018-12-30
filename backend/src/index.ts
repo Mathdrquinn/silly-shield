@@ -1,8 +1,5 @@
-import * as dotenv from 'dotenv';
 import { Options } from 'graphql-yoga';
 import { createServer } from './createServer';
-
-dotenv.config({ path: 'variables.env' });
 const server = createServer();
 
 // TODO Use express middlewre to hndle cookies (JWT)
