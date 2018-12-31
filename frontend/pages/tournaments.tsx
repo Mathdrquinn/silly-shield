@@ -1,8 +1,64 @@
+import { default as gql } from 'graphql-tag';
 import * as React from 'react';
+import { Query, QueryResult } from 'react-apollo';
+import Error from '../components/Error';
+import Loading from '../components/Loading';
 import { Table, Td, Th } from '../components/Table';
 
 export const URL = '/tournaments';
+interface ITournament {
+    id: string;
+    name: string;
+    startDate: string;
+    playerCountLimit: number;
+}
 
+const ALL_TOUNAMENTS_QUERY = gql`
+    query ALL_TOUNAMENTS_QUERY {
+        tournaments {
+            id
+            name
+            startDate
+            playerCountLimit
+        }
+    }
+`;
+
+const TournamentsTable: React.FunctionComponent<{ tournaments: ITournament[] }> = ({ tournaments }) => {
+    const alltheT = tournaments.map(({ id, name, startDate: startDateTime, playerCountLimit }) => {
+        const startDate = new Date(startDateTime).toDateString();
+        return (
+            <tr key={id}>
+                <Th>
+                    <a href={id}>
+                        {name}
+                    </a>
+                </Th>
+                <Td>
+                    <time>{startDate}</time>
+                </Td>
+                <Td><em>unknown</em> of <strong>tbd</strong></Td>
+                <Td><time>undefined</time></Td>
+                <Td>{playerCountLimit}</Td>
+            </tr>
+        );
+    });
+    return (
+        <React.Fragment>
+            {alltheT}
+        </React.Fragment>
+    );
+};
+const tournamentsTblQH = (query: QueryResult<{ tournaments: ITournament[] }>): React.ReactNode => {
+    const { data, error, loading } = query;
+    if (loading) {
+        return (<Loading>Tournaments</Loading>);
+    }
+    if (error) {
+        return (<Error error={error} />);
+    }
+    return (<TournamentsTable {...data} />);
+};
 export class Tournaments extends React.Component<{}, {}> {
     render() {
         return (
@@ -20,52 +76,9 @@ export class Tournaments extends React.Component<{}, {}> {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <Th>
-                                <a href="">
-                                    Billy's Battle
-                                </a>
-                            </Th>
-                            <Td>
-                                <time>2018-12-15</time>
-                            </Td>
-                            <Td>3 of 5</Td>
-                            <Td><time>2018-12-25</time></Td>
-                            <Td>32</Td>
-                        </tr>
-                        <tr>
-                            <Th>
-                                <a href="">quinn197 Smackdown</a>
-                            </Th>
-                            <Td>
-                                <time>2018-12-16</time>
-                            </Td>
-                            <Td>2 of 4</Td>
-                            <Td><time>2018-12-26</time></Td>
-                            <Td>16</Td>
-                        </tr>
-                        <tr>
-                            <Th>
-                                <a href="">SlowBro Smash</a>
-                            </Th>
-                            <Td>
-                                <time>2018-12-17</time>
-                            </Td>
-                            <Td>3 of 6</Td>
-                            <Td><time>2018-12-28</time></Td>
-                            <Td>64</Td>
-                        </tr>
-                        <tr>
-                            <Th>
-                                <a href="">The Village</a>
-                            </Th>
-                            <Td>
-                                <time>2018-12-22</time>
-                            </Td>
-                            <Td>1 of 6</Td>
-                            <Td><time>2018-12-29</time></Td>
-                            <Td>128</Td>
-                        </tr>
+                        <Query query={ALL_TOUNAMENTS_QUERY}>
+                            {tournamentsTblQH}
+                        </Query>
                     </tbody>
                 </Table>
             </main>

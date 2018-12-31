@@ -1,5 +1,5 @@
-import ApolloClient from 'apollo-boost';
-import withApollo from 'next-with-apollo';
+import { default as ApolloClient } from 'apollo-boost';
+import nextWithApollo from 'next-with-apollo';
 import { API_URL } from '../config';
 
 function createClient({ headers }): ApolloClient<{}> {
@@ -12,8 +12,9 @@ function createClient({ headers }): ApolloClient<{}> {
                 fetchOptions,
                 headers,
             });
-        }
+        },
+        uri: API_URL,
     });
 }
 
-export const withData = withApollo(createClient);
+export const withData = nextWithApollo(createClient);

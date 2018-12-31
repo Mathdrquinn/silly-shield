@@ -26,6 +26,13 @@ export namespace QueryResolvers {
     info: GraphQLResolveInfo
   ) => User[] | Promise<User[]>;
 
+  export type TournamentsResolver = (
+    parent: undefined,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => Tournament[] | Promise<Tournament[]>;
+
   export interface Type {
     users: (
       parent: undefined,
@@ -33,6 +40,13 @@ export namespace QueryResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => User[] | Promise<User[]>;
+
+    tournaments: (
+      parent: undefined,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => Tournament[] | Promise<Tournament[]>;
   }
 }
 
@@ -85,51 +99,6 @@ export namespace UserResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => string | Promise<string>;
-  }
-}
-
-export namespace MutationResolvers {
-  export const defaultResolvers = {};
-
-  export interface ArgsCreateUser {
-    name: string;
-    email: string | null;
-  }
-
-  export interface ArgsCreateTournament {
-    name: string;
-    startDate: string;
-    playerCountLimit: number | null;
-  }
-
-  export type CreateUserResolver = (
-    parent: undefined,
-    args: ArgsCreateUser,
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => User | null | Promise<User | null>;
-
-  export type CreateTournamentResolver = (
-    parent: undefined,
-    args: ArgsCreateTournament,
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => Tournament | null | Promise<Tournament | null>;
-
-  export interface Type {
-    createUser: (
-      parent: undefined,
-      args: ArgsCreateUser,
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => User | null | Promise<User | null>;
-
-    createTournament: (
-      parent: undefined,
-      args: ArgsCreateTournament,
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => Tournament | null | Promise<Tournament | null>;
   }
 }
 
@@ -272,9 +241,54 @@ export namespace TournamentResolvers {
   }
 }
 
+export namespace MutationResolvers {
+  export const defaultResolvers = {};
+
+  export interface ArgsCreateUser {
+    name: string;
+    email: string | null;
+  }
+
+  export interface ArgsCreateTournament {
+    name: string;
+    startDate: string;
+    playerCountLimit: number | null;
+  }
+
+  export type CreateUserResolver = (
+    parent: undefined,
+    args: ArgsCreateUser,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => User | null | Promise<User | null>;
+
+  export type CreateTournamentResolver = (
+    parent: undefined,
+    args: ArgsCreateTournament,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => Tournament | null | Promise<Tournament | null>;
+
+  export interface Type {
+    createUser: (
+      parent: undefined,
+      args: ArgsCreateUser,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => User | null | Promise<User | null>;
+
+    createTournament: (
+      parent: undefined,
+      args: ArgsCreateTournament,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => Tournament | null | Promise<Tournament | null>;
+  }
+}
+
 export interface Resolvers {
   Query: QueryResolvers.Type;
   User: UserResolvers.Type;
-  Mutation: MutationResolvers.Type;
   Tournament: TournamentResolvers.Type;
+  Mutation: MutationResolvers.Type;
 }

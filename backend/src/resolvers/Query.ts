@@ -5,4 +5,7 @@ export const Query: QueryResolvers.Type = {
     users(parent, args, ctx) {
         return ctx.db.users();
     },
+    tournaments(parent, args, ctx) {
+        return ctx.db.tournaments();
+    },
 };

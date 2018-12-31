@@ -1,5 +1,18 @@
+import { default as gql } from 'graphql-tag';
 import * as React from 'react';
-import { Table, Th, Td } from '../components/Table';
+import { Query } from 'react-apollo';
+import { Table, Td, Th } from '../components/Table';
+
+const ALL_TOUNAMENTS_QUERY = gql`
+    query ALL_TOUNAMENTS_QUERY {
+        tournaments {
+            id
+            name
+            startDate
+            playerCountLimit
+        }
+    }
+`;
 
 export const URL = '/open-tournaments';
 
@@ -20,6 +33,9 @@ export class OpenTournaments extends React.Component<{}, {}> {
                         </tr>
                     </thead>
                     <tbody>
+                        <Query query={ALL_TOUNAMENTS_QUERY}>
+                            {(p) => { console.log(p); return (<tr><Td>Howdy</Td></tr>); }}
+                        </Query>
                         <tr>
                             <Th>
                                 <a href="">

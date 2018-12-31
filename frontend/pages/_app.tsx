@@ -1,9 +1,10 @@
+import { ApolloClient } from 'apollo-boost';
 import { Container, default as NextApp } from 'next/app';
-import { ApolloProvider, ApolloProviderProps } from 'react-apollo';
+import { ApolloProvider } from 'react-apollo';
 import { Page } from '../components/Page';
 import { withData } from '../lib/withData';
 
-class App extends NextApp {
+class App extends NextApp<{ apollo: ApolloClient<{}> }> {
     static async getInitialProps({ Component, ctx }) {
         let pageProps: any = {};
         const { query } = ctx;
@@ -16,11 +17,11 @@ class App extends NextApp {
         return { pageProps, query };
     }
     render() {
-        const { Component, pageProps } = this.props;
+        const { apollo, Component, pageProps } = this.props;
 
         return (
             <Container>
-              <ApolloProvider>
+              <ApolloProvider client={apollo} >
                   <Page>
                       <h1>Silly Shield</h1>
                       <p>
