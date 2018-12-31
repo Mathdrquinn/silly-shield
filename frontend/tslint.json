@@ -7,6 +7,7 @@
       "member-access": [true, "no-public"],
       "no-submodule-imports": [true, "next"],
       "variable-name": [true, "allow-pascal-case"],
-      "no-console": { "severity": "warn" }
+      "no-console": { "severity": "warn" },
+      "max-line-length": { "options": { "limit": 120 }}
     }
   }
