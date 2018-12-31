@@ -1,18 +1,44 @@
+import { default as gql } from 'graphql-tag';
 import * as React from 'react';
+import { Mutation } from 'react-apollo';
 import { convertBlobToBase64URL } from '../util/blob';
 import { Logger } from '../util/Logger';
 
 interface IState {
-    first: string;
-    last: string;
+    firstName: string;
+    lastName: string;
+    email: string;
     username: string;
-    poGoUsername: string;
     trainerLevel: number;
-    picture: File | null;
+    image: File | null;
     preview: string | null;
 }
 
 export const URL = '/sign-up';
+const CREATE_USER_QUERY = gql`
+    mutation CREATE_USER_MUTATION(
+            $firstName: String!
+            $lastName: String!
+            $email: String!
+            $image: String!
+            $username: String!
+            $trainerLevel: Int!
+        ) {
+        createUser(
+            firstName: $firstName
+            lastName: $lastName
+            email: $email
+            image: $image
+            username: $username
+            trainerLevel: $trainerLevel
+        ) {
+            id
+            firstName
+            username
+            image
+        }
+    }
+`;
 export class SignUp extends React.Component<{}, IState> {
     static Preview: React.SFC<{ preview: string }> = ({ preview }) => (
         <img
@@ -23,24 +49,30 @@ export class SignUp extends React.Component<{}, IState> {
     )
 
     state = {
-        first: '',
-        last: '',
-        picture: null,
-        poGoUsername: '',
+        email: 'brendan@foo.com',
+        firstName: 'brendan',
+        image: null,
+        lastName: 'Quinn',
         preview: null,
-        trainerLevel: 0,
-        username: '',
+        trainerLevel: 22,
+        username: 'quinn197',
     };
 
     onFirstChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         if (e.target) {
-            this.setState({ first: e.target.value });
+            this.setState({ firstName: e.target.value });
         }
     }
 
     onLastChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         if (e.target) {
-            this.setState({ last: e.target.value });
+            this.setState({ lastName: e.target.value });
+        }
+    }
+
+    onEmailChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+        if (e.target) {
+            this.setState({ email: e.target.value });
         }
     }
 
@@ -50,128 +82,138 @@ export class SignUp extends React.Component<{}, IState> {
         }
     }
 
-    onPoGoUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        if (e.target) {
-            this.setState({ poGoUsername: e.target.value });
-        }
-    }
-
     onTrainerLevelChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         if (e.target) {
             this.setState({ trainerLevel: Number(e.target.value) });
         }
     }
 
-    onPictureChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    onImageChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         if (e.target && e.target.files && e.target.files.length) {
-            this.setState({ picture: e.target.files[0] });
+            this.setState({ image: e.target.files[0] });
         }
     }
 
-    onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-        e.preventDefault();
-        alert('Submitted :)');
-    }
+    // onSubmit: () => React.FormEventHandler<HTMLFormElement> = (submit) => (e) => {
+    //     e.preventDefault();
+    //     submit(this.state);
+    //     alert('Submitted :)');
+    // }
 
     componentDidUpdate = (prevProps, prevState) => {
-        const currentPicture = this.state.picture;
-        const previousPicture = prevState.picture;
-        if (currentPicture && currentPicture !== previousPicture) {
-            convertBlobToBase64URL(currentPicture)
+        const currentImage = this.state.image;
+        const previousImage = prevState.image;
+        if (currentImage && currentImage !== previousImage) {
+            convertBlobToBase64URL(currentImage)
                 .then(url => this.setState({ preview: url }))
                 .catch(e => Logger.error(e));
         }
     }
 
-    render() {
-        const { preview } = this.state;
-
-        return (
-            <form onSubmit={this.onSubmit}>
-                <legend>Sign Up for Silly Shield Tournaments</legend>
-                <fieldset>
-                    <legend>Your info</legend>
-                    <label htmlFor="first">
-                        First Name:
-                        <input
-                            id="first"
-                            name="first"
-                            onChange={this.onFirstChange}
-                            required={true}
-                            type="text"
-                            value={this.state.first}
-                        />
-                    </label>
-                    <br/>
-                    <label htmlFor="last">
-                        Last Name:
+    renderForm = ({ submit, query }): React.ReactNode => (
+        <form onSubmit={submit}>
+            <legend>Sign Up for Silly Shield Tournaments</legend>
+            <fieldset>
+                <legend>Your info</legend>
+                <label htmlFor="firstName">
+                    First Name:
                     <input
-                            id="last"
-                            name="last"
-                            onChange={this.onLastChange}
-                            required={true}
-                            type="text"
-                            value={this.state.last}
+                        id="firstName"
+                        name="firstName"
+                        onChange={this.onFirstChange}
+                        required={true}
+                        type="text"
+                        value={this.state.firstName}
                     />
-                    </label>
-                    <br/>
-                    <label htmlFor="username">
-                        Username:
-                        <small>(for Silly Shield)</small>
-                        <input
-                            id="username"
-                            name="username"
-                            onChange={this.onUsernameChange}
-                            required={true}
-                            type="text"
-                            value={this.state.username}
-                        />
-                    </label>
-                    <br/>
-                    <label htmlFor="poGoUsername">
-                        Username:
-                        <small>(for PokemonGo)</small>
-                        <input
-                            id="poGoUsername"
-                            name="poGoUsername"
-                            onChange={this.onPoGoUsernameChange}
-                            required={true}
-                            type="text"
-                            value={this.state.poGoUsername}
-                        />
-                    </label>
-                    <br/>
-                    <label htmlFor="trainerLevel">
-                        Trainer Level:
-                        <input
-                            id="trainerLevel"
-                            name="trainerLevel"
-                            onChange={this.onTrainerLevelChange}
-                            required={true}
-                            type="number"
-                            min={0}
-                            max={40}
-                            step={1}
-                            value={this.state.trainerLevel}
-                        />
-                    </label>
-                    <br/>
-                    <label htmlFor="picture">
-                        Screen shot of trainer page:
-                        <input
-                            id="picture"
-                            name="picture"
-                            onChange={this.onPictureChange}
-                            required={true}
-                            type="file"
-                            accept="image/*"
-                        />
-                    </label>
-                    {preview ? (<SignUp.Preview preview={preview} />) : null}
-                    <br/>
-                    <button name="submit">Sign Up</button>
-                </fieldset>
-            </form>
+                </label>
+                <br/>
+                <label htmlFor="lastName">
+                    Last Name:
+                <input
+                        id="lastName"
+                        name="lastName"
+                        onChange={this.onLastChange}
+                        required={true}
+                        type="text"
+                        value={this.state.lastName}
+                />
+                </label>
+                <br/>
+                <label htmlFor="email">
+                    Email:
+                <input
+                        id="email"
+                        name="email"
+                        onChange={this.onEmailChange}
+                        required={true}
+                        type="email"
+                        value={this.state.email}
+                />
+                </label>
+                <br/>
+                <label htmlFor="username">
+                    Username:
+                    <small>(from PokemonGo)</small>
+                    <input
+                        id="username"
+                        name="username"
+                        onChange={this.onUsernameChange}
+                        required={true}
+                        type="text"
+                        value={this.state.username}
+                    />
+                </label>
+                <br/>
+                <label htmlFor="trainerLevel">
+                    Trainer Level:
+                    <input
+                        id="trainerLevel"
+                        name="trainerLevel"
+                        onChange={this.onTrainerLevelChange}
+                        required={true}
+                        type="number"
+                        min={0}
+                        max={40}
+                        step={1}
+                        value={this.state.trainerLevel}
+                    />
+                </label>
+                <br/>
+                <label htmlFor="image">
+                    Screen shot of trainer page:
+                    <input
+                        id="image"
+                        name="image"
+                        onChange={this.onImageChange}
+                        required={true}
+                        type="file"
+                        accept="image/*"
+                    />
+                </label>
+                {this.state.preview ? (<SignUp.Preview preview={this.state.preview} />) : null}
+                <br/>
+                <button name="submit">Sign Up</button>
+            </fieldset>
+        </form>
+    )
+
+    mutationChild = (mutationFunction, query) => {
+        const submit: React.FormEventHandler<HTMLFormElement> = (e) => {
+            e.preventDefault();
+            mutationFunction();
+        };
+        console.log(query, submit);
+        return this.renderForm({ query, submit });
+    }
+
+    render() {
+        return (
+            <Mutation
+                mutation={CREATE_USER_QUERY}
+                variables={this.state}
+            >
+                {this.mutationChild}
+            </Mutation>
         );
     }
 }

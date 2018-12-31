@@ -1,16 +1,14 @@
 import { default as gql } from 'graphql-tag';
+import { default as Link } from 'next/link';
 import * as React from 'react';
 import { Query } from 'react-apollo';
 import { Table, Td, Th } from '../components/Table';
+import { ITournament } from '../types/Tournamet';
+import { IHref } from '../types/util';
 import { queryHandler } from '../util/queryHandler';
+import { ITournamentQuery } from './tournament';
 
 export const URL = '/tournaments';
-interface ITournament {
-    id: string;
-    name: string;
-    startDate: string;
-    playerCountLimit: number;
-}
 
 const ALL_TOUNAMENTS_QUERY = gql`
     query ALL_TOUNAMENTS_QUERY {
@@ -26,12 +24,13 @@ const ALL_TOUNAMENTS_QUERY = gql`
 const TournamentsTable: React.FunctionComponent<{ tournaments: ITournament[] }> = ({ tournaments }) => {
     const alltheT = tournaments.map(({ id, name, startDate: startDateTime, playerCountLimit }) => {
         const startDate = new Date(startDateTime).toDateString();
+        const href: IHref<ITournamentQuery> = { pathname: '/tournament', query: { id } };
         return (
             <tr key={id}>
                 <Th>
-                    <a href={id}>
-                        {name}
-                    </a>
+                    <Link href={href}>
+                        <a>{name}</a>
+                    </Link>
                 </Th>
                 <Td>
                     <time>{startDate}</time>

@@ -5,8 +5,8 @@ import { Context } from '../types';
 export const Mutation: MutationResolvers.Type = {
     // args -- parent, args, context, info
     createUser(parent, args, ctx: Context) {
-        const { name, email = 'default@gmail.com' } = args;
-        return ctx.db.createUser({ name, email });
+        const { firstName, lastName, email, username, image, trainerLevel } = args;
+        return ctx.db.createUser({ firstName, lastName, email, username, image, trainerLevel });
     },
     createTournament(parent, { name, startDate, playerCountLimit }, ctx) {
         const players: UserCreateManyInput = {
