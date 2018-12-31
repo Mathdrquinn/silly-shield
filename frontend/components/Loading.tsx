@@ -2,7 +2,7 @@ import * as React from 'react';
 
 const UPDATE_INTERVAL = 800;
 
-export default class Loading extends React.Component<{}, { count: number}> {
+export class Loading extends React.Component<{}, { count: number}> {
     state = { count: 0 };
 
     incrementCount = () => {

@@ -1,9 +1,8 @@
 import { default as gql } from 'graphql-tag';
 import * as React from 'react';
-import { Query, QueryResult } from 'react-apollo';
-import Error from '../components/Error';
-import Loading from '../components/Loading';
+import { Query } from 'react-apollo';
 import { Table, Td, Th } from '../components/Table';
+import { queryHandler } from '../util/queryHandler';
 
 export const URL = '/tournaments';
 interface ITournament {
@@ -49,16 +48,6 @@ const TournamentsTable: React.FunctionComponent<{ tournaments: ITournament[] }> 
         </React.Fragment>
     );
 };
-const tournamentsTblQH = (query: QueryResult<{ tournaments: ITournament[] }>): React.ReactNode => {
-    const { data, error, loading } = query;
-    if (loading) {
-        return (<Loading>Tournaments</Loading>);
-    }
-    if (error) {
-        return (<Error error={error} />);
-    }
-    return (<TournamentsTable {...data} />);
-};
 export class Tournaments extends React.Component<{}, {}> {
     render() {
         return (
@@ -77,7 +66,7 @@ export class Tournaments extends React.Component<{}, {}> {
                     </thead>
                     <tbody>
                         <Query query={ALL_TOUNAMENTS_QUERY}>
-                            {tournamentsTblQH}
+                            {queryHandler(TournamentsTable, 'Tournaments')}
                         </Query>
                     </tbody>
                 </Table>
