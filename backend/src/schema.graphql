@@ -6,5 +6,7 @@ type Mutation {
 
 type Query {
     users: [User]!
+    user(where: UserWhereUniqueInput): User
     tournaments: [Tournament]!
+    tournament(where: TournamentWhereUniqueInput!): Tournament
 }

@@ -17,8 +17,7 @@ class App extends NextApp<{ apollo: ApolloClient<{}> }> {
         return { pageProps, query };
     }
     render() {
-        const { apollo, Component, pageProps } = this.props;
-console.log(pageProps);
+        const { apollo, Component, pageProps, query } = this.props;
         return (
             <Container>
               <ApolloProvider client={apollo}>
@@ -28,7 +27,7 @@ console.log(pageProps);
                           <em>Silly Shield</em>
                           <span> is a platform to organize PvP tournament for PokémonGo</span>
                       </p>
-                      {pageProps.statusCode !== 404 ? <Component {...pageProps} /> : <h2>404 Page Not Found</h2>}
+                      {pageProps.statusCode !== 404 ? <Component {...pageProps} query={query} /> : <h2>40 fizzle</h2>}
                   </Page>
                 </ApolloProvider>
             </Container>

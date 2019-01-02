@@ -1,12 +1,14 @@
 import { default as gql } from 'graphql-tag';
+import { default as Router } from 'next/router';
 import * as React from 'react';
 import { Mutation, MutationFn, MutationOptions, MutationResult } from 'react-apollo';
 import { Error } from '../components/Error';
 import { convertBlobToBase64URL } from '../util/blob';
 import { Logger } from '../util/Logger';
+import { URL as USER_URL } from './user';
 
 interface IProps {
-    onSubmit: (options: MutationOptions<any, IUser>) => void;
+    onSubmit: (options: MutationOptions<any, IUser>) => Promise<MutationResult<IUserResponse>>;
     mutationResult: MutationResult;
 }
 interface IState {
@@ -42,7 +44,10 @@ const CREATE_USER_QUERY = gql`
     }
 `;
 
-interface IUser {
+interface IUserResponse {
+    id: string;
+}
+export interface IUser {
     firstName: string;
     lastName: string;
     email: string;
@@ -106,13 +111,17 @@ export class SignUp extends React.Component<IProps, IState> {
         }
     }
 
-    onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
         const props = this.props;
         const { firstName, lastName, email, username, trainerLevel, preview } = this.state;
         console.log(props);
-        this.props.onSubmit({ variables: { firstName, lastName, email, username, trainerLevel, image: preview } });
-        alert('Submitted :)');
+        const response = await this.props
+            .onSubmit({ variables: { firstName, lastName, email, username, trainerLevel, image: preview } });
+        Router.push({
+            pathname: USER_URL,
+            query: { id: response.data.id },
+        });
     }
 
     componentDidUpdate = (prevProps, prevState) => {
@@ -132,7 +141,7 @@ export class SignUp extends React.Component<IProps, IState> {
                 <legend>Sign Up for Silly Shield Tournaments</legend>
                 <fieldset
                     disabled={mutationResult.loading}
-                    aria-busy={true}
+                    aria-busy={mutationResult.loading}
                 >
                     <Error error={mutationResult.error} />
                     <legend>Your info</legend>

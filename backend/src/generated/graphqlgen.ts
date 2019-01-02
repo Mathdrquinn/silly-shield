@@ -27,6 +27,21 @@ type UserOrderByInput =
 export namespace QueryResolvers {
   export const defaultResolvers = {};
 
+  export interface UserWhereUniqueInput {
+    id: string | null;
+  }
+  export interface TournamentWhereUniqueInput {
+    id: string | null;
+  }
+
+  export interface ArgsUser {
+    where: UserWhereUniqueInput | null;
+  }
+
+  export interface ArgsTournament {
+    where: TournamentWhereUniqueInput;
+  }
+
   export type UsersResolver = (
     parent: undefined,
     args: {},
@@ -34,12 +49,26 @@ export namespace QueryResolvers {
     info: GraphQLResolveInfo
   ) => User[] | Promise<User[]>;
 
+  export type UserResolver = (
+    parent: undefined,
+    args: ArgsUser,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => User | null | Promise<User | null>;
+
   export type TournamentsResolver = (
     parent: undefined,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo
   ) => Tournament[] | Promise<Tournament[]>;
+
+  export type TournamentResolver = (
+    parent: undefined,
+    args: ArgsTournament,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => Tournament | null | Promise<Tournament | null>;
 
   export interface Type {
     users: (
@@ -49,12 +78,26 @@ export namespace QueryResolvers {
       info: GraphQLResolveInfo
     ) => User[] | Promise<User[]>;
 
+    user: (
+      parent: undefined,
+      args: ArgsUser,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => User | null | Promise<User | null>;
+
     tournaments: (
       parent: undefined,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Tournament[] | Promise<Tournament[]>;
+
+    tournament: (
+      parent: undefined,
+      args: ArgsTournament,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => Tournament | null | Promise<Tournament | null>;
   }
 }
 

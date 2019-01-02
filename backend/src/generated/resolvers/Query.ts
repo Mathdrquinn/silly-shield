@@ -8,7 +8,13 @@ export const Query: QueryResolvers.Type = {
   users: (parent, args, ctx) => {
     throw new Error("Resolver not implemented");
   },
+  user: (parent, args, ctx) => {
+    throw new Error("Resolver not implemented");
+  },
   tournaments: (parent, args, ctx) => {
+    throw new Error("Resolver not implemented");
+  },
+  tournament: (parent, args, ctx) => {
     throw new Error("Resolver not implemented");
   }
 };

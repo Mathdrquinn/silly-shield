@@ -13,20 +13,35 @@ interface IProps {
 }
 
 const TOURNAMENT_QUERY = gql`
-    query TOURNAMENT_QUERY {
-        id,
-        name,
+    query TOURNAMENT_QUERY($id: ID!) {
+        tournament(where: {
+            id: $id
+        }) {
+            id
+            name
+            startDate
+            playerCountLimit
+        }
     }
 `;
 
-export default class Tournament extends React.Component<IProps> {
-    render() {
-        return (
-            <main>
-                <Query query={TOURNAMENT_QUERY}>
-                    {queryHandler<ITournament>(props => <p>It loaded {props.name}</p>, 'your tournament')}
-                </Query>
-            </main>
-        );
-    }
-}
+const Tournament: React.FunctionComponent<{ tournament: ITournament }> = ({ tournament }) => (
+    <dl>
+        <dt>Name</dt>
+        <dd>{tournament.name}</dd>
+        <dt>Start Date</dt>
+        <dd>{tournament.startDate}</dd>
+        <dt>Player Count Limit</dt>
+        <dd>{tournament.playerCountLimit}</dd>
+    </dl>
+);
+
+const QueryWrapper: React.FunctionComponent<IProps> = props => (
+    <main>
+        <Query query={TOURNAMENT_QUERY} variables={{ id: props.query.id }}>
+            {queryHandler<{ tournament: ITournament }>(Tournament, 'your tournament')}
+        </Query>
+    </main>
+);
+
+export default QueryWrapper;
