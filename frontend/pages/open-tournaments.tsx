@@ -16,11 +16,28 @@ const ALL_TOUNAMENTS_QUERY = gql`
 
 export const URL = '/open-tournaments';
 
-export class OpenTournaments extends React.Component<{}, {}> {
+const QueryWrapper = () => (
+    <Query query={ALL_TOUNAMENTS_QUERY}>
+        {({ data }) => <span>{JSON.stringify(data, null, 4)}</span>}
+    </Query>
+);
+
+export class OpenTournaments extends React.Component<{}, { open: boolean }> {
+    state = { open: false };
+    onClick = () => {
+        this.setState({ open: !this.state.open });
+    }
+
     render() {
+        const { open } = this.state;
         return (
             <main>
                 <h1>Open Touraments</h1>
+                <button
+                    onClick={this.onClick}
+                >
+                    Toggle
+                </button>
                 <Table>
                     <caption>Tournaments looking for players</caption>
                     <thead>
@@ -33,9 +50,7 @@ export class OpenTournaments extends React.Component<{}, {}> {
                         </tr>
                     </thead>
                     <tbody>
-                        <Query query={ALL_TOUNAMENTS_QUERY}>
-                            {(p) => { console.log(p); return (<tr><Td>Howdy</Td></tr>); }}
-                        </Query>
+                        {open ? <tr><Td><QueryWrapper /></Td></tr> : null}
                         <tr>
                             <Th>
                                 <a href="">
