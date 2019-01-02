@@ -1,9 +1,14 @@
 import { default as gql } from 'graphql-tag';
 import * as React from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation, MutationFn, MutationOptions, MutationResult } from 'react-apollo';
+import { Error } from '../components/Error';
 import { convertBlobToBase64URL } from '../util/blob';
 import { Logger } from '../util/Logger';
 
+interface IProps {
+    onSubmit: (options: MutationOptions<any, IUser>) => void;
+    mutationResult: MutationResult;
+}
 interface IState {
     firstName: string;
     lastName: string;
@@ -20,26 +25,33 @@ const CREATE_USER_QUERY = gql`
             $firstName: String!
             $lastName: String!
             $email: String!
-            $image: String!
             $username: String!
+            $image: String!
             $trainerLevel: Int!
         ) {
         createUser(
             firstName: $firstName
             lastName: $lastName
             email: $email
-            image: $image
             username: $username
+            image: $image
             trainerLevel: $trainerLevel
         ) {
             id
-            firstName
-            username
-            image
         }
     }
 `;
-export class SignUp extends React.Component<{}, IState> {
+
+interface IUser {
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+    trainerLevel: number;
+    image: string;
+}
+
+export class SignUp extends React.Component<IProps, IState> {
     static Preview: React.SFC<{ preview: string }> = ({ preview }) => (
         <img
             alt="Your trainer image: looking so fly"
@@ -94,11 +106,14 @@ export class SignUp extends React.Component<{}, IState> {
         }
     }
 
-    // onSubmit: () => React.FormEventHandler<HTMLFormElement> = (submit) => (e) => {
-    //     e.preventDefault();
-    //     submit(this.state);
-    //     alert('Submitted :)');
-    // }
+    onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault();
+        const props = this.props;
+        const { firstName, lastName, email, username, trainerLevel, preview } = this.state;
+        console.log(props);
+        this.props.onSubmit({ variables: { firstName, lastName, email, username, trainerLevel, image: preview } });
+        alert('Submitted :)');
+    }
 
     componentDidUpdate = (prevProps, prevState) => {
         const currentImage = this.state.image;
@@ -110,112 +125,108 @@ export class SignUp extends React.Component<{}, IState> {
         }
     }
 
-    renderForm = ({ submit, query }): React.ReactNode => (
-        <form onSubmit={submit}>
-            <legend>Sign Up for Silly Shield Tournaments</legend>
-            <fieldset>
-                <legend>Your info</legend>
-                <label htmlFor="firstName">
-                    First Name:
-                    <input
-                        id="firstName"
-                        name="firstName"
-                        onChange={this.onFirstChange}
-                        required={true}
-                        type="text"
-                        value={this.state.firstName}
-                    />
-                </label>
-                <br/>
-                <label htmlFor="lastName">
-                    Last Name:
-                <input
-                        id="lastName"
-                        name="lastName"
-                        onChange={this.onLastChange}
-                        required={true}
-                        type="text"
-                        value={this.state.lastName}
-                />
-                </label>
-                <br/>
-                <label htmlFor="email">
-                    Email:
-                <input
-                        id="email"
-                        name="email"
-                        onChange={this.onEmailChange}
-                        required={true}
-                        type="email"
-                        value={this.state.email}
-                />
-                </label>
-                <br/>
-                <label htmlFor="username">
-                    Username:
-                    <small>(from PokemonGo)</small>
-                    <input
-                        id="username"
-                        name="username"
-                        onChange={this.onUsernameChange}
-                        required={true}
-                        type="text"
-                        value={this.state.username}
-                    />
-                </label>
-                <br/>
-                <label htmlFor="trainerLevel">
-                    Trainer Level:
-                    <input
-                        id="trainerLevel"
-                        name="trainerLevel"
-                        onChange={this.onTrainerLevelChange}
-                        required={true}
-                        type="number"
-                        min={0}
-                        max={40}
-                        step={1}
-                        value={this.state.trainerLevel}
-                    />
-                </label>
-                <br/>
-                <label htmlFor="image">
-                    Screen shot of trainer page:
-                    <input
-                        id="image"
-                        name="image"
-                        onChange={this.onImageChange}
-                        required={true}
-                        type="file"
-                        accept="image/*"
-                    />
-                </label>
-                {this.state.preview ? (<SignUp.Preview preview={this.state.preview} />) : null}
-                <br/>
-                <button name="submit">Sign Up</button>
-            </fieldset>
-        </form>
-    )
-
-    mutationChild = (mutationFunction, query) => {
-        const submit: React.FormEventHandler<HTMLFormElement> = (e) => {
-            e.preventDefault();
-            mutationFunction();
-        };
-        console.log(query, submit);
-        return this.renderForm({ query, submit });
-    }
-
     render() {
+        const { mutationResult } = this.props;
         return (
-            <Mutation
-                mutation={CREATE_USER_QUERY}
-                variables={this.state}
-            >
-                {this.mutationChild}
-            </Mutation>
+            <form onSubmit={this.onSubmit}>
+                <legend>Sign Up for Silly Shield Tournaments</legend>
+                <fieldset
+                    disabled={mutationResult.loading}
+                    aria-busy={true}
+                >
+                    <Error error={mutationResult.error} />
+                    <legend>Your info</legend>
+                    <label htmlFor="firstName">
+                        First Name:
+                        <input
+                            id="firstName"
+                            name="firstName"
+                            onChange={this.onFirstChange}
+                            required={true}
+                            type="text"
+                            value={this.state.firstName}
+                        />
+                    </label>
+                    <br/>
+                    <label htmlFor="lastName">
+                        Last Name:
+                    <input
+                            id="lastName"
+                            name="lastName"
+                            onChange={this.onLastChange}
+                            required={true}
+                            type="text"
+                            value={this.state.lastName}
+                    />
+                    </label>
+                    <br/>
+                    <label htmlFor="email">
+                        Email:
+                    <input
+                            id="email"
+                            name="email"
+                            onChange={this.onEmailChange}
+                            required={true}
+                            type="email"
+                            value={this.state.email}
+                    />
+                    </label>
+                    <br/>
+                    <label htmlFor="username">
+                        Username:
+                        <small>(from PokemonGo)</small>
+                        <input
+                            id="username"
+                            name="username"
+                            onChange={this.onUsernameChange}
+                            required={true}
+                            type="text"
+                            value={this.state.username}
+                        />
+                    </label>
+                    <br/>
+                    <label htmlFor="trainerLevel">
+                        Trainer Level:
+                        <input
+                            id="trainerLevel"
+                            name="trainerLevel"
+                            onChange={this.onTrainerLevelChange}
+                            required={true}
+                            type="number"
+                            min={0}
+                            max={40}
+                            step={1}
+                            value={this.state.trainerLevel}
+                        />
+                    </label>
+                    <br/>
+                    <label htmlFor="image">
+                        Screen shot of trainer page:
+                        <input
+                            id="image"
+                            name="image"
+                            onChange={this.onImageChange}
+                            required={true}
+                            type="file"
+                            accept="image/*"
+                        />
+                    </label>
+                    {this.state.preview ? (<SignUp.Preview preview={this.state.preview} />) : null}
+                    <br/>
+                    <button name="submit">Sign Up</button>
+                </fieldset>
+            </form>
         );
     }
 }
 
-export default SignUp;
+const MutationWrapper: React.FunctionComponent<{}> = props => (
+    <Mutation
+        mutation={CREATE_USER_QUERY}
+        variables={{ firstName: 'a', lastName: 'b', email: 'c@x.com', username: 'd', trainerLevel: 1, image: 'abc123' }}
+    >
+        {(fn: MutationFn<any>, mr: MutationResult<any>) => (<SignUp onSubmit={fn} mutationResult={mr} {...props} />)}
+    </Mutation>
+);
+
+export default MutationWrapper;
