@@ -12,8 +12,8 @@ interface IProps {
     query: ITournamentQuery;
 }
 
-const TOURNAMENT_QUERY = gql`
-    query TOURNAMENT_QUERY($id: ID!) {
+const TOURNAMENT_WHERE_QUERY = gql`
+    query TOURNAMENT_WHERE_QUERY($id: ID!) {
         tournament(where: {
             id: $id
         }) {
@@ -38,7 +38,7 @@ const Tournament: React.FunctionComponent<{ tournament: ITournament }> = ({ tour
 
 const QueryWrapper: React.FunctionComponent<IProps> = props => (
     <main>
-        <Query query={TOURNAMENT_QUERY} variables={{ id: props.query.id }}>
+        <Query query={TOURNAMENT_WHERE_QUERY} variables={{ id: props.query.id }}>
             {queryHandler<{ tournament: ITournament }>(Tournament, 'your tournament')}
         </Query>
     </main>

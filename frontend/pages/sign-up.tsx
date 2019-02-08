@@ -1,15 +1,16 @@
 import { default as gql } from 'graphql-tag';
 import { default as Router } from 'next/router';
 import * as React from 'react';
-import { Mutation, MutationFn, MutationOptions, MutationResult } from 'react-apollo';
+import { Mutation, MutationFn, MutationResult } from 'react-apollo';
 import { Error } from '../components/Error';
+import { IUser, IUserNew } from '../types/User';
 import { convertBlobToBase64URL } from '../util/blob';
 import { Logger } from '../util/Logger';
 import { URL as USER_URL } from './user';
 
 interface IProps {
-    onSubmit: (options: MutationOptions<any, IUser>) => Promise<MutationResult<IUserResponse>>;
-    mutationResult: MutationResult;
+    onSubmit: MutationFn<IUser, IUserNew>;
+    mutationResult: MutationResult<IUser>;
 }
 interface IState {
     firstName: string;
@@ -43,18 +44,6 @@ const CREATE_USER_QUERY = gql`
         }
     }
 `;
-
-interface IUserResponse {
-    id: string;
-}
-export interface IUser {
-    firstName: string;
-    lastName: string;
-    email: string;
-    username: string;
-    trainerLevel: number;
-    image: string;
-}
 
 export class SignUp extends React.Component<IProps, IState> {
     static Preview: React.SFC<{ preview: string }> = ({ preview }) => (
@@ -113,15 +102,17 @@ export class SignUp extends React.Component<IProps, IState> {
 
     onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
-        const props = this.props;
         const { firstName, lastName, email, username, trainerLevel, preview } = this.state;
-        console.log(props);
         const response = await this.props
             .onSubmit({ variables: { firstName, lastName, email, username, trainerLevel, image: preview } });
-        Router.push({
-            pathname: USER_URL,
-            query: { id: response.data.id },
-        });
+        if (response) {
+            Router.push({
+                pathname: USER_URL,
+                query: { id: response.data.id },
+            });
+        } else {
+            console.log('No response?');
+        }
     }
 
     componentDidUpdate = (prevProps, prevState) => {
@@ -136,6 +127,11 @@ export class SignUp extends React.Component<IProps, IState> {
 
     render() {
         const { mutationResult } = this.props;
+        if (mutationResult.called) {
+            return (
+                <p>Thank you for signing up!</p>
+            );
+        }
         return (
             <form onSubmit={this.onSubmit}>
                 <legend>Sign Up for Silly Shield Tournaments</legend>
@@ -232,7 +228,6 @@ export class SignUp extends React.Component<IProps, IState> {
 const MutationWrapper: React.FunctionComponent<{}> = props => (
     <Mutation
         mutation={CREATE_USER_QUERY}
-        variables={{ firstName: 'a', lastName: 'b', email: 'c@x.com', username: 'd', trainerLevel: 1, image: 'abc123' }}
     >
         {(fn: MutationFn<any>, mr: MutationResult<any>) => (<SignUp onSubmit={fn} mutationResult={mr} {...props} />)}
     </Mutation>
