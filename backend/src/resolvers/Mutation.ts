@@ -8,6 +8,14 @@ export const Mutation: MutationResolvers.Type = {
         const { firstName, lastName, email, username, image, trainerLevel } = args;
         return ctx.db.createUser({ firstName, lastName, email, username, image, trainerLevel });
     },
+    updateUser(parent, args, ctx) {
+        const { id, firstName, lastName, username, trainerLevel } = args;
+        console.log(args);
+        return ctx.db.updateUser({
+            data: { firstName, lastName, username, trainerLevel },
+            where: { id },
+        });
+    },
     createTournament(parent, { name, startDate, playerCountLimit }, ctx) {
         const players: UserCreateManyInput = {
             connect: {

@@ -1,6 +1,7 @@
 # import * from './generated/prisma.graphql';
 type Mutation {
-    createUser(firstName: String!, lastName: String!, email: String!, image: String!, username: String!, trainerLevel: Int!): User
+    createUser(firstName: String!, lastName: String!, email: String!, image: String!, username: String!, trainerLevel: Int!): User!
+    updateUser(id: ID!, firstName: String, lastName: String, username: String, trainerLevel: Int): User!
     createTournament(name: String!, startDate: DateTime!, playerCountLimit: Int): Tournament
 }
 

@@ -414,6 +414,14 @@ export namespace MutationResolvers {
     trainerLevel: number;
   }
 
+  export interface ArgsUpdateUser {
+    id: string;
+    firstName: string | null;
+    lastName: string | null;
+    username: string | null;
+    trainerLevel: number | null;
+  }
+
   export interface ArgsCreateTournament {
     name: string;
     startDate: string;
@@ -425,7 +433,14 @@ export namespace MutationResolvers {
     args: ArgsCreateUser,
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => User | null | Promise<User | null>;
+  ) => User | Promise<User>;
+
+  export type UpdateUserResolver = (
+    parent: undefined,
+    args: ArgsUpdateUser,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => User | Promise<User>;
 
   export type CreateTournamentResolver = (
     parent: undefined,
@@ -440,7 +455,14 @@ export namespace MutationResolvers {
       args: ArgsCreateUser,
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => User | null | Promise<User | null>;
+    ) => User | Promise<User>;
+
+    updateUser: (
+      parent: undefined,
+      args: ArgsUpdateUser,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => User | Promise<User>;
 
     createTournament: (
       parent: undefined,

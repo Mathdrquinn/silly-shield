@@ -8,6 +8,9 @@ export const Mutation: MutationResolvers.Type = {
   createUser: (parent, args, ctx) => {
     throw new Error("Resolver not implemented");
   },
+  updateUser: (parent, args, ctx) => {
+    throw new Error("Resolver not implemented");
+  },
   createTournament: (parent, args, ctx) => {
     throw new Error("Resolver not implemented");
   }
